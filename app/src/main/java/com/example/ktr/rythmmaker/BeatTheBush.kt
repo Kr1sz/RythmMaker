@@ -17,6 +17,7 @@ class BeatTheBush : Service() {
         return null
     }
 
+
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         Log.d("K Tag", "Started")
 
