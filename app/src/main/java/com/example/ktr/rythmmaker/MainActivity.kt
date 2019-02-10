@@ -1,19 +1,19 @@
 package com.example.ktr.rythmmaker
 
 import android.content.Context
-import android.icu.util.UniversalTimeScale.toLong
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.os.PowerManager.WakeLock
 import android.view.View
-import android.os.VibrationEffect
-import android.os.Vibrator
 import android.util.Log
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlin.math.round
-
 
 var onOrOff = false
 var length:Long = 75
+
+var timing :Long  = 3159
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -22,32 +22,25 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
     }
 
-    fun turnOn(view: View) {
-
-        var freq= beatPerMinute.text
-        var a :Long  = ((60000 / freq.toString().toDouble()) - length).toLong()
-        Log.d("K Tag", a.toString())
-        var state: Vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-
+    public fun turnOn(view: View) {
         onOrOff = onOrOff.not()
-
         if (onOrOff) {
             button.setText( "Turn Off Vibration")
 
+            Log.d("K Tag", timing.toString())
 
-            val mVibratePattern = longArrayOf(a, length, a, length)
-//            val mAmplitudes = intArrayOf(0, 50)
-            state.vibrate(VibrationEffect.createWaveform(mVibratePattern,1))
+
+            timing  = ((60000 / beatPerMinute.text.toString().toDouble()) - length).toLong()
+
+            Log.d("K Tag", timing.toString())
+            startService(Intent(this,BeatTheBush::class.java))
+
+            Log.d("K Tag", "started")
         }
         else
         {
             button.setText("Set The Tone")
-            state.cancel()
+            stopService(Intent(this, BeatTheBush::class.java))
         }
-
-
-
-
-//            state.vibrate(VibrationEffect.createOneShot(75, VibrationEffect.DEFAULT_AMPLITUDE))
     }
 }
