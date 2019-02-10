@@ -1,12 +1,15 @@
 package com.example.ktr.rythmmaker
 
 import android.content.Context
+import android.icu.util.UniversalTimeScale.toLong
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.os.VibrationEffect
 import android.os.Vibrator
+import android.util.Log
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlin.math.round
 
 
 var onOrOff = false
@@ -21,7 +24,9 @@ class MainActivity : AppCompatActivity() {
 
     fun turnOn(view: View) {
 
-        var waitingTime = beatPerMinute
+        var freq= beatPerMinute.text
+        var a :Long  = ((60000 / freq.toString().toDouble()) - length).toLong()
+        Log.d("K Tag", a.toString())
         var state: Vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
 
         onOrOff = onOrOff.not()
@@ -29,11 +34,10 @@ class MainActivity : AppCompatActivity() {
         if (onOrOff) {
             button.setText( "Turn Off Vibration")
 
-            val time = waitingTime
 
-            val mVibratePattern = longArrayOf(length, length)
-            val mAmplitudes = intArrayOf(0, 50)
-            state.vibrate(VibrationEffect.createWaveform(mVibratePattern,mAmplitudes,1))
+            val mVibratePattern = longArrayOf(a, length, a, length)
+//            val mAmplitudes = intArrayOf(0, 50)
+            state.vibrate(VibrationEffect.createWaveform(mVibratePattern,1))
         }
         else
         {
