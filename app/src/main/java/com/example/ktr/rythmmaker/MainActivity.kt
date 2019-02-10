@@ -23,6 +23,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
     }
 
+
     public fun turnOn(view: View) {
         onOrOff = onOrOff.not()
         if (onOrOff) {
@@ -35,7 +36,7 @@ class MainActivity : AppCompatActivity() {
 
             Log.d("K Tag", timing.toString())
             startService(Intent(this,BeatTheBush::class.java))
-
+//            startForegroundService(Intent(this,BeatTheBush::class.java))
             Log.d("K Tag", "started")
         }
         else
