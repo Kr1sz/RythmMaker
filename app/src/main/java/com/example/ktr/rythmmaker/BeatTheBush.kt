@@ -29,18 +29,22 @@ class BeatTheBush : Service() {
         Log.d("K Tag", timing.toString())
         val mAmplitudes = intArrayOf(0, 5,0,5)
         var i : Int = 0
-        while ( i<=2) {
-            Thread.sleep(1000)
+        Thread.sleep(1000)
+
+        while ( i<=3) {
+            Log.d("K Tag", i.toString())
             state.vibrate(VibrationEffect.createWaveform(mVibratePattern, mAmplitudes, 1))
+            Thread.sleep(1000)
             i++
         }
+
         return Service.START_STICKY
 
     }
 
     override fun onDestroy() {
-        var state: Vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-        state.cancel()
+
+        Log.d("K tag", "service destroyed")
         super.onDestroy()
     }
 }

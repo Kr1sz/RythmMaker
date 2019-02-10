@@ -5,6 +5,7 @@ import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.PowerManager.WakeLock
+import android.os.Vibrator
 import android.view.View
 import android.util.Log
 import kotlinx.android.synthetic.main.activity_main.*
@@ -40,7 +41,9 @@ class MainActivity : AppCompatActivity() {
         else
         {
             button.setText("Set The Tone")
-            stopService(Intent(this, BeatTheBush::class.java))
+            var state: Vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+
+            state.cancel()
         }
     }
 }
