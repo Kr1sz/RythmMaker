@@ -9,6 +9,7 @@ import android.os.VibrationEffect
 import android.os.Vibrator
 import android.util.Log
 import com.example.ktr.rythmmaker.R.id.beatPerMinute
+import com.example.ktr.rythmmaker.R.id.screen
 
 class BeatTheBush : Service() {
 
@@ -43,7 +44,7 @@ class BeatTheBush : Service() {
 //        var i : Int = 0
 //        while ( i<=2) {
         Thread.sleep(1000)
-
+//        startForegroundService(In)
         vibrate()
 
 //        }

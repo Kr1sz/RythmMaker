@@ -8,6 +8,7 @@ import android.os.PowerManager.WakeLock
 import android.os.Vibrator
 import android.view.View
 import android.util.Log
+import android.view.KeyEvent
 import kotlinx.android.synthetic.main.activity_main.*
 
 var onOrOff = false
@@ -23,7 +24,11 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
     }
 
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        startForegroundService(Intent(this,BeatTheBush::class.java))
 
+        return super.onKeyDown(keyCode, event)
+    }
     public fun turnOn(view: View) {
         onOrOff = onOrOff.not()
         if (onOrOff) {
@@ -33,7 +38,6 @@ class MainActivity : AppCompatActivity() {
 
 
             timing  = ((60000 / beatPerMinute.text.toString().toDouble()) - length).toLong()
-
             Log.d("K Tag", timing.toString())
             startService(Intent(this,BeatTheBush::class.java))
 //            startForegroundService(Intent(this,BeatTheBush::class.java))
