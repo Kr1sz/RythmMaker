@@ -25,8 +25,8 @@ class getBackgroundNotification(private val context: Context, private var myServ
             context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val notifyIntent = Intent(context, MainActivity::class.java)
 
-        val title = "Sample Notification"
-        val message = "You have received a sample notification. This notification will take you to the details page."
+        val title = "RythMaker"
+        val message = "Background Rythm is now working."
 
         notifyIntent.putExtra("title", title)
         notifyIntent.putExtra("message", message)
