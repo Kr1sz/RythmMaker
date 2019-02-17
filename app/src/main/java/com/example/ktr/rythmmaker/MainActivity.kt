@@ -1,53 +1,60 @@
 package com.example.ktr.rythmmaker
 
+import android.app.AlarmManager
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.content.ServiceConnection
+import android.os.AsyncTask
 import android.os.Bundle
-import android.os.Vibrator
+import android.os.IBinder
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
-import android.view.KeyEvent
 import android.view.View
 import kotlinx.android.synthetic.main.activity_main.*
 
-var onOrOff = false
 var length:Long = 75
 var timing :Long  = 3159
 
 
 class MainActivity : AppCompatActivity() {
 
+    var myService: BeatTheBush? = null
+    var isBound = false
+
+
+    private val myConnection = object : ServiceConnection {
+        override fun onServiceConnected(
+            className: ComponentName,
+            service: IBinder
+        ) {
+            val binder = service as BeatTheBush.MyLocalBinder
+            myService = binder.getService()
+            isBound = true
+
+            getBackgroundNotification(applicationContext, myService).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR)
+        }
+
+        override fun onServiceDisconnected(name: ComponentName) {
+
+            isBound = false
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-    }
 
-    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
-        startForegroundService(Intent(this,BeatTheBush::class.java))
+        val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
-        return super.onKeyDown(keyCode, event)
     }
 
     fun turnOn(view: View) {
-        onOrOff = onOrOff.not()
-        if (onOrOff) {
-            button.text = "Turn Off Vibration"
+        timing = ((60000 / beatPerMinute.text.toString().toDouble()) - length).toLong()
+        val serviceClass = BeatTheBush::class.java
+        val serviceIntent = Intent(applicationContext, serviceClass)
 
-            Log.d("K Tag", timing.toString())
+        startService(serviceIntent)
+        bindService(serviceIntent, myConnection, Context.BIND_AUTO_CREATE)
 
-
-            timing  = ((60000 / beatPerMinute.text.toString().toDouble()) - length).toLong()
-            Log.d("K Tag", timing.toString())
-            startService(Intent(this,BeatTheBush::class.java))
-//            startForegroundService(Intent(this,BeatTheBush::class.java))
-            Log.d("K Tag", "started")
-        }
-        else
-        {
-            button.text = "Set The Tone"
-            var state: Vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-
-            state.cancel()
-        }
     }
 }

@@ -3,6 +3,7 @@ package com.example.ktr.rythmmaker
 import android.app.Service
 import android.content.Context
 import android.content.Intent
+import android.os.Binder
 import android.os.IBinder
 import android.os.VibrationEffect
 import android.os.Vibrator
@@ -10,17 +11,15 @@ import android.util.Log
 
 class BeatTheBush : Service() {
 
+    private val myBinder = MyLocalBinder()
 
-    override fun onBind(intent: Intent?): IBinder? {
-        Log.d("K Tag", "Bind")
-        return null
+    override fun onBind(intent: Intent): IBinder? {
+        return myBinder
     }
 
-    private fun vibrate() {
+    fun vibrate(): String {
         Log.d("K Tag", "Started")
-
         val state: Vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-
         val mVibratePattern = longArrayOf(timing, length, timing, length)
         Log.d("K Tag", timing.toString())
         val mAmplitudes = intArrayOf(0, 5,0,5)
@@ -33,16 +32,28 @@ class BeatTheBush : Service() {
             Thread.sleep(1000)
             i++
         }
+        return "Buzz On"
     }
-    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+
+    inner class MyLocalBinder : Binder() {
+        fun getService(): BeatTheBush {
+            return this@BeatTheBush
+        }
+    }
+
+    override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
         Thread.sleep(1000)
         vibrate()
         return Service.START_STICKY
-
     }
 
     override fun onDestroy() {
-        Log.d("K tag", "service destroyed")
         super.onDestroy()
+        stopForeground(true)
+    }
+
+    override fun onTaskRemoved(rootIntent: Intent?) {
+        super.onTaskRemoved(rootIntent)
+        stopSelf()
     }
 }

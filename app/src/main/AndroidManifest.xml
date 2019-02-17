@@ -21,8 +21,10 @@
         </activity>
         <service android:name=".BeatTheBush"
                     android:enabled="true"
-                    android:permission="android.permission.FOREGROUND_SERVICE"
                     android:exported="true"/>
+        <service android:name=".NotService"
+                 android:enabled="true"
+                 android:exported="true"/>
     </application>
 
 </manifest>
