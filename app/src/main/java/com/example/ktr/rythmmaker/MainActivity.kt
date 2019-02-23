@@ -1,6 +1,5 @@
 package com.example.ktr.rythmmaker
 
-import android.app.AlarmManager
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
@@ -9,12 +8,13 @@ import android.os.AsyncTask
 import android.os.Bundle
 import android.os.IBinder
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.view.View
 import kotlinx.android.synthetic.main.activity_main.*
 
 var length:Long = 75
 var timing :Long  = 3159
-
+var switch: Boolean = true
 
 class MainActivity : AppCompatActivity() {
 
@@ -43,18 +43,33 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
-
     }
 
     fun turnOn(view: View) {
-        timing = ((60000 / beatPerMinute.text.toString().toDouble()) - length).toLong()
         val serviceClass = BeatTheBush::class.java
         val serviceIntent = Intent(applicationContext, serviceClass)
+        Log.d("K Tag", switch.toString())
+        if (switch) {
+            timing = ((60000 / beatPerMinute.text.toString().toDouble()) - length).toLong()
+            switch = false
 
-        startService(serviceIntent)
-        bindService(serviceIntent, myConnection, Context.BIND_AUTO_CREATE)
+
+            startService(serviceIntent)
+            bindService(serviceIntent, myConnection, Context.BIND_AUTO_CREATE)
+            button.text = "Stop the beat"
+        } else {
+            button.text = "Set the beat"
+            try {
+                unbindService(myConnection)
+                stopService(serviceIntent)
+
+            } catch (e: IllegalArgumentException) {
+                Log.w("MainActivity", "Error Unbinding Service.")
+            }
+            super.onDestroy()
+            switch = true
+
+        }
 
     }
 }

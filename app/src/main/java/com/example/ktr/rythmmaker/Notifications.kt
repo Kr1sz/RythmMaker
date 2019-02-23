@@ -18,11 +18,8 @@ class getBackgroundNotification(private val context: Context, private var myServ
 
     override fun doInBackground(vararg params: Long?): Any? {
 
-        //Create Channel
         createChannel(context)
 
-        var notificationManager: NotificationManager =
-            context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val notifyIntent = Intent(context, MainActivity::class.java)
 
         val title = "RythMaker"

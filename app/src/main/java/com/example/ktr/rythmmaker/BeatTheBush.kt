@@ -25,7 +25,7 @@ class BeatTheBush : Service() {
         val mAmplitudes = intArrayOf(0, 5,0,5)
         var i = 0
 
-        while ( i<=2) {
+        while (i <= 1) {
             Log.d("K Tag", i.toString())
             state.vibrate(VibrationEffect.createWaveform(mVibratePattern, mAmplitudes, 1))
             Thread.MAX_PRIORITY
@@ -48,11 +48,16 @@ class BeatTheBush : Service() {
     }
 
     override fun onDestroy() {
+        val state: Vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+        state.cancel()
+        Thread.sleep(100)
+        state.cancel()
         super.onDestroy()
         stopForeground(true)
     }
 
     override fun onTaskRemoved(rootIntent: Intent?) {
+
         super.onTaskRemoved(rootIntent)
         stopSelf()
     }
