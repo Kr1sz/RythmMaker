@@ -22,9 +22,6 @@
         <service android:name=".BeatTheBush"
                     android:enabled="true"
                     android:exported="true"/>
-        <service android:name=".NotService"
-                 android:enabled="true"
-                 android:exported="true"/>
     </application>
 
 </manifest>

@@ -2,5 +2,6 @@
     <string name="app_name">Rythm Maker</string>
     <string name="set_the_tone">Set the Tone</string>
     <string name="_19">19</string>
-    <string name="beat_per_mninute">Beat per mninute</string>
+    <string name="beat_per_mninute">beat per mninute</string>
+    <string name="todo">TODO</string>
 </resources>

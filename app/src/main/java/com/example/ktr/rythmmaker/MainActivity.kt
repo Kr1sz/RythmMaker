@@ -1,5 +1,6 @@
 package com.example.ktr.rythmmaker
 
+//import com.example.ktr.rythmmaker.R.id.imageView
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
@@ -43,6 +44,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        Log.d("Picture", "Pic")
+//        imageView.setImageDrawable(getDrawable(R.mipmap.eggbckg))
     }
 
     fun turnOn(view: View) {
@@ -57,6 +60,7 @@ class MainActivity : AppCompatActivity() {
             startService(serviceIntent)
             bindService(serviceIntent, myConnection, Context.BIND_AUTO_CREATE)
             button.text = "Stop the beat"
+
         } else {
             button.text = "Set the beat"
             try {
