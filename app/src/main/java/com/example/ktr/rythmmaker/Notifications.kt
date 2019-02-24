@@ -14,8 +14,6 @@ class getBackgroundNotification(private val context: Context, private var myServ
     AsyncTask<Long, Void, Any>() {
 
     private lateinit var mNotification: Notification
-    private val mNotificationId: Int = 1000
-
     override fun doInBackground(vararg params: Long?): Any? {
 
         createChannel(context)
@@ -32,12 +30,12 @@ class getBackgroundNotification(private val context: Context, private var myServ
         notifyIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
 
 
-        val pendingIntent = PendingIntent.getActivity(context, 0, notifyIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+        val pendingIntent: PendingIntent =
+            PendingIntent.getActivity(context, 0, notifyIntent, PendingIntent.FLAG_UPDATE_CURRENT)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 
             mNotification = Notification.Builder(context, CHANNEL_ID)
-                // Set the intent that will fire when the user taps the notification
                 .setContentIntent(pendingIntent)
                 .setSmallIcon(R.mipmap.round)
                 .setAutoCancel(true)
@@ -78,7 +76,8 @@ class getBackgroundNotification(private val context: Context, private var myServ
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 
-            val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            val notificationManager: NotificationManager =
+                context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
             val importance = NotificationManager.IMPORTANCE_HIGH
             val notificationChannel = NotificationChannel(CHANNEL_ID, CHANNEL_NAME, importance)

@@ -7,7 +7,6 @@ import android.os.Binder
 import android.os.IBinder
 import android.os.VibrationEffect
 import android.os.Vibrator
-import android.util.Log
 
 class BeatTheBush : Service() {
 
@@ -18,15 +17,11 @@ class BeatTheBush : Service() {
     }
 
     fun vibrate(): String {
-        Log.d("K Tag", "Started")
         val state: Vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-        val mVibratePattern = longArrayOf(timing, length, timing, length)
-        Log.d("K Tag", timing.toString())
-        val mAmplitudes = intArrayOf(0, 5,0,5)
+        val mVibratePattern: LongArray = longArrayOf(timing, length, timing, length)
+        val mAmplitudes: IntArray = intArrayOf(0, 5, 0, 5)
         var i = 0
-
         while (i <= 1) {
-            Log.d("K Tag", i.toString())
             state.vibrate(VibrationEffect.createWaveform(mVibratePattern, mAmplitudes, 1))
             Thread.MAX_PRIORITY
             Thread.sleep(1000)
@@ -57,7 +52,6 @@ class BeatTheBush : Service() {
     }
 
     override fun onTaskRemoved(rootIntent: Intent?) {
-
         super.onTaskRemoved(rootIntent)
         stopSelf()
     }
